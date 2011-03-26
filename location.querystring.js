@@ -1,3 +1,16 @@
+/*
+    Original script title: location.querystring.js, v1.0
+    Copyright (c) 2011, Chris O'Brien, prettycode.org
+    http://github.com/prettycode/location.querystring.js
+    
+    LICENSE: Permission is hereby granted for unrestricted use,
+    modification, and redistribution of this script, ONLY under
+    the condition that this code comment is kept wholly complete,
+    appearing above the script's code body--in all original or
+    modified implementations of this script, except those that
+    are minified.
+*/ 
+
 (function() {
 
     // If a key appears in the querystring more than once, its value in the resulting collection is an array
