@@ -1,0 +1,37 @@
+Use `location.$querystring()` to return a collection of the parameters in the query string of the current location.
+
+For example, when the `window.location` is "http://prettycode.org/?key=value&key2=value2", `location.$querystring()`
+will return this object:
+
+    {
+        key: "value",
+        key2: "value2"
+    }
+    
+When there is no query string (e.g. `location` is "http://prettycode.org"), `$querystring()` will return `undefined`.
+
+When a key is present but no value is specified (e.g. "http://prettycode.org/?key"), `$querystring()` will return 
+an object with `undefined` for `key`'s value:
+
+    {
+        key: undefined
+    }
+
+If the key specifies an empty value (e.g. "http://prettycode.org/?key="), the value in the returned object will have an 
+empty string for the key:  
+
+    {
+        key: ""
+    }
+
+When a key is specified multiple times in a query string (e.g. "http://prettycode.org/?name=Chris&name="), the 
+returned object will have an array with each value for the key:
+
+    {
+        name: [
+            "Chris",
+            ""
+        ]
+    }
+
+For other scenarios and a complete list of scenarios, see test.htm.
