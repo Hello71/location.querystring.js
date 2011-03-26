@@ -1,12 +1,23 @@
 Use `location.$querystring()` to return a collection of the parameters in the query string of the current location.
 
-For example, when the `window.location` is "http://prettycode.org/?key=value&key2=value2", `location.$querystring()`
-will return this object:
+For example, if `$querystring()` is invoked:
+
+    var params = location.$querystring();
+    
+And the URL (`window.location`) for the page is "http://prettycode.org/?key=value&key2=value2", it will return this
+object:
 
     {
         key: "value",
         key2: "value2"
     }
+
+`$querystring()` also accepts a search query argument, so one can get an object collection of query string parameters 
+from an aribtrary string instead of the query string for the current `location`. The first character of the argument
+will be removed, since the first character of a query string is '?'. This can helpful for Ajax pages that use the hash 
+instead of a URL query string:
+
+    var hashParams = location.$querystring(location.hash);
     
 When there is no query string (e.g. `location` is "http://prettycode.org"), `$querystring()` will return `undefined`.
 
