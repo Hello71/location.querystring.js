@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    
+    <script type="text/javascript" src="location.querystring.js"></script>
+</head>
+<body>
+    Make sure the browser JavaScript debugger is enabled and the JavaScript console is showing.
+</body>
+
+<script type="text/javascript">
+    
+    function keyCount(qs) {
+        var count = 0;
+    
+        for (var key in qs) {
+            if (collection.hasOwnProperty(key) && key !== "toString") {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    function TestFailure(msg) {
+        return msg || "Test failed.";
+    }
+
+    var collection;
+        
+    // General tests
+
+    (function() {
+    
+        testcase = "";
+        collection = location.$querystring(testcase);
+    
+        if (collection !== undefined) {
+            throw new TestFailure();
+        }
+        
+    })();     
+
+    (function() {
+    
+        testcase = undefined;
+        collection = location.$querystring(testcase);
+    
+        if (collection !== undefined) {
+            throw new TestFailure();
+        }
+        
+    })();     
+
+    (function() {
+    
+        testcase = "?";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 0) {
+            throw new TestFailure("Empty query string has " + keyCount(collection) + " keys");
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 1 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== undefined)
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key=";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 1 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "")
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key=value";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 1 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "value")
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key=value&";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 1 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "value")
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key=&";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 1 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "")
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    // Multiple keys tests
+    
+    (function() {
+    
+        testcase = "?key=&key2";
+        collection = location.$querystring(testcase);
+        
+        if (keyCount(collection) !== 2 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "" ||
+            !collection.hasOwnProperty("key2") ||
+            collection["key2"] !== undefined) 
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key=&key2=";
+        collection = location.$querystring(testcase);
+        
+        if (keyCount(collection) !== 2 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "" ||
+            !collection.hasOwnProperty("key2") ||
+            collection["key2"] !== "") 
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key=value1&key2=value2";
+        collection = location.$querystring(testcase);
+        
+        if (keyCount(collection) !== 2 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "value1" ||
+            !collection.hasOwnProperty("key2") ||
+            collection["key2"] !== "value2") 
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    // Multiple same-named keys tests
+    
+    (function() {
+    
+        testcase = "?key=value1&key=value2";
+        collection = location.$querystring(testcase);
+        
+        if (keyCount(collection) !== 1 || 
+            !collection.hasOwnProperty("key") || 
+            Object.prototype.toString.call(collection["key"]) !== '[object Array]' ||
+            collection["key"][0] !== "value1" ||
+            collection["key"][1] !== "value2") 
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+        
+    // Values with = in them tests
+    
+    (function() {
+    
+        testcase = "?key=value=mustache";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 1 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "value=mustache")
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    (function() {
+    
+        testcase = "?key=value=mustache&key2=mustache=man";
+        collection = location.$querystring(testcase);
+    
+        if (keyCount(collection) !== 2 || 
+            !collection.hasOwnProperty("key") || 
+            collection["key"] !== "value=mustache" ||
+            !collection.hasOwnProperty("key2") || 
+            collection["key2"] !== "mustache=man" )
+        {
+            throw new TestFailure();
+        }
+        
+    })();
+    
+    console.log("All tests pass.");
+
+</script>
+
+</html>
