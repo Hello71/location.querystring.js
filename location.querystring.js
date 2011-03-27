@@ -55,11 +55,11 @@
                 continue;
             }
             
-            var seperatorIndex = pair.indexOf("=");
+            var separatorIndex = pair.indexOf("=");
             
             // No = value?
             
-            if (seperatorIndex === -1) {
+            if (separatorIndex === -1) {
                 setValue(result, pair, undefined);
                 continue;
             }
